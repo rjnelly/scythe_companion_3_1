@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#9C9489</color>
+    <color name="colorPrimaryDark">#58483B</color>
+    <color name="colorAccent">#DCE1E5</color>
+
+    <!-- Faction Colors -->
+    <color name="albion_green">#056700</color>
+    <color name="crimea_yellow">#F8B437</color>
+    <color name="nordic_blue">#005BC6</color>
+    <color name="polania_white">#ffffff</color>
+    <color name="rusviet_red">#CC0000</color>
+    <color name="saxony_black">#000000</color>
+    <color name="togawa_purple">#812C81</color>
+    <color name="tesla_teal">#47C4B6</color>
+    <color name="fenris_orange">#F38933</color>
+
+    <color name="playermat_brown">#372718</color>
+</resources>

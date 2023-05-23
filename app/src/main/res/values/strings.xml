@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">Scythe Companion</string>
+
+    <!-- Strings used for fragments for navigation -->
+
+    <!-- Strings used for menu actions -->
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings used for UI Elements -->
+    <string name="btn_new_game">New Game</string>
+    <string name="add_player">Add Player</string>
+    <string name="btn_player_setup">Player Setup</string>
+    <string name="btn_summary">Summary</string>
+    <string name="btn_game_setup">Setup Game</string>
+    <string name="choose_faction">Choose Faction</string>
+    <string name="add_faction">How would you like to select a faction?</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose">Choose</string>
+    <string name="choose_playerMat">Choose Player Mat</string>
+    <string name="add_playerMat">How would you like to select a player mat?</string>
+    <string name="btn_randomize">Random</string>
+    <string name="faction_label">Faction</string>
+    <string name="playermat_label">Player Mat</string>
+    <string name="none">None</string>
+    <string name="new_game">New Game</string>
+
+
+    <!-- Strings used in Settings Fragment -->
+    <string name="preference_file_key">preferences</string>
+    <string name="player_list_key">players</string>
+
+
+    <string name="campaign_mode_pref_key">campaign_mode</string>
+    <string name="campaign_mode">Campaign Mode</string>
+    <string name="campaign_mode_summary">Factions will not change on new game.</string>
+    <string name="selection_preferences">Selection Preferences</string>
+
+    <string name="factions_summary">Select which factions you would like to play with.</string>
+    <string name="playermats_summary">Select which player mats you would like to play with.</string>
+    <string name="expansions_summary">Select which expansions you are using.</string>
+
+
+    <!-- Preference Titles -->
+    <string name="factions_header">Factions</string>
+    <string name="playermats_header">Player Mats</string>
+    <string name="expansions_header">Expansions</string>
+
+    <!-- Preference Alert Dialog -->
+    <string name="confirm_message">Are you sure you would like to select The Rise of Fenris expansion.</string>
+    <string name="ok">Confirm</string>
+
+    <!-- Preference Keys -->
+    <string name="factions_preference_key">factions</string>
+    <string name="playermats_preference_key">playermats</string>
+    <string name="expansions_preference_key">expansions</string>
+    <string name="number_players_preference_key">number_players</string>
+
+    <!-- Expansions Preference Keys -->
+    <string name="invaders_from_afar_preference_key">invaders_from_afar</string>
+    <string name="rise_of_fenris_preference_key">rise_of_fenris</string>
+
+    <!-- Faction Preference Keys -->
+    <string name="rusviet_preference_key">rusviet</string>
+    <string name="polania_preference_key">polania</string>
+    <string name="crimea_preference_key">crimea</string>
+    <string name="nordic_preference_key">nordic</string>
+    <string name="saxony_preference_key">saxony</string>
+    <string name="albion_preference_key">albion</string>
+    <string name="togawa_preference_key">togawa</string>
+    <string name="tesla_preference_key">tesla</string>
+    <string name="fenris_preference_key">fenris</string>
+
+    <!-- Player Mat Preference Keys -->
+    <string name="industrial_preference_key">industrial</string>
+    <string name="engineering_preference_key">engineering</string>
+    <string name="militant_preference_key">militant</string>
+    <string name="patriotic_preference_key">patriotic</string>
+    <string name="innovative_preference_key">innovative</string>
+    <string name="mechanical_preference_key">mechanical</string>
+    <string name="agricultural_preference_key">agricultural</string>
+
+    <!-- Expansions -->
+    <string name="invaders_from_afar">Invaders From Afar</string>
+    <string name="rise_of_fenris">Rise of Fenris</string>
+    <string name="spoiler_alert">Spoiler Alert: Do not turn on unless you have completed the first five episodes of The Rise of Fenris</string>
+
+    <!-- Faction Names -->
+    <string name="rusviet">Rusviet Union</string>
+    <string name="polania">Republic of Polania</string>
+    <string name="crimea">Crimean Khanate</string>
+    <string name="nordic">Nordic Kingdoms</string>
+    <string name="saxony">Saxony Empire</string>
+    <string name="albion">Clan Albion</string>
+    <string name="togawa">Togawa Shogunate</string>
+    <string name="tesla">Tesla</string>
+    <string name="fenris">Fenris</string>
+
+    <!-- Player Mats -->
+    <string name="industrial">Industrial</string>
+    <string name="engineering">Engineering</string>
+    <string name="militant">Militant</string>
+    <string name="patriotic">Patriotic</string>
+    <string name="innovative">Innovative</string>
+    <string name="mechanical">Mechanical</string>
+    <string name="agricultural">Agricultural</string>
+    <string name="enter_name">Enter Player Name</string>
+
+
+</resources>

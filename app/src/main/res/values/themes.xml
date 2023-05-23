@@ -1,0 +1,40 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ScytheCompanion" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <!--<item name="fontFamily">@font/league_gothic_regular</item>-->
+        <!--<item name="android:textSize">24sp</item>-->
+    </style>
+
+    <style name="Theme.ScytheCompanion.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="tint">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="Theme.ScytheCompanion.Button" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="tint">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Theme.ScytheCompanion.AlertDialog" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--<item name="buttonBarPositiveButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>-->
+    </style>
+
+    <style name="Theme.ScytheCompanion.AlertButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
+</resources>
