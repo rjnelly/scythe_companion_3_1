@@ -46,15 +46,16 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         int factionColor = ContextCompat.getColor(context, player.getFaction().COLOR);
 
         holder.playerNameTV.setText(player.getName());
-
-        holder.factionNameTV.setText(player.getFaction().NAME);
-        holder.factionNameTV.setBackgroundColor(factionColor);
-        holder.factionNameTV.setOnClickListener(new View.OnClickListener() {
+        holder.playerNameTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.playerNameSelected(holder.getAdapterPosition());
             }
         });
+
+        holder.factionNameTV.setText(player.getFaction().NAME);
+        holder.factionNameTV.setBackgroundColor(factionColor);
+
         if (player.getFaction() == Faction.POLANIA) {
             holder.factionNameTV.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         } else {

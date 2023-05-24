@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.scythecompanion.databinding.DialogAddPlayerBinding;
 import com.example.scythecompanion.databinding.DialogListBinding;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.core.view.WindowCompat;
@@ -24,11 +26,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ActivityMainBinding;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     private PlayerDataViewModel viewModel;
     private SharedPreferences preferences;
     private ActivityMainBinding binding;
+
+    private AlertDialog editPlayerNameDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +173,37 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     @Override
     public void playerNameSelected(int playerPosition) {
+        DialogAddPlayerBinding addPlayerBinding = DialogAddPlayerBinding.inflate(getLayoutInflater());
+        View dialogView = addPlayerBinding.getRoot();
+        TextInputLayout playerInput = addPlayerBinding.textInputLayoutPlayerName;
+        EditText editTextPlayerName = addPlayerBinding.editTextPlayerName;
+        playerInput.setEndIconDrawable(R.drawable.ic_check_24);
+        editTextPlayerName.setOnEditorActionListener(new EditNameListener(playerPosition));
+        editTextPlayerName.setText(viewModel.getPlayers().getValue().get(playerPosition).getName());
+        playerInput.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePlayerName(playerPosition, playerInput.getEditText().getText().toString());
+            }
+        });
+        editPlayerNameDialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setTitle("Edit Name")
+                .create();
 
+        playerInput.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePlayerName(playerPosition, playerInput.getEditText().getText().toString());
+            }
+        });
+        editPlayerNameDialog.show();
+        addPlayerBinding.editTextPlayerName.requestFocus();
+    }
+    public void changePlayerName(int playerPosition, String name){
+        if(name.isEmpty())name = "Player " + (viewModel.getPlayers().getValue().size() + 1);
+        viewModel.changePlayerName(playerPosition, name);
+        editPlayerNameDialog.dismiss();
     }
 
     @Override
@@ -248,5 +286,21 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         playerMatListView.setLayoutManager(new LinearLayoutManager(this));
         playerMatListView.setAdapter(adapter);
         dialog.show();
+    }
+
+    private class EditNameListener implements TextView.OnEditorActionListener {
+        private int position;
+        public EditNameListener(int playerPosition){
+            this.position = playerPosition;
+        }
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == EditorInfo.IME_ACTION_NEXT)) {
+                changePlayerName(position, v.getText().toString());
+                editPlayerNameDialog.dismiss();
+                return true;
+            }
+            return false;
+        }
     }
 }

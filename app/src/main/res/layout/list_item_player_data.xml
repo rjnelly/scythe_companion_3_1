@@ -2,10 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item"
+    android:layout_height="@dimen/summary_list_item"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardBackgroundColor="@color/colorAccent"
     app:cardCornerRadius="20dp"
     app:cardElevation="6dp">
 
@@ -18,8 +18,10 @@
             android:id="@+id/summary_player_name_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginEnd="1dp"
+            android:layout_weight="3"
             android:autoText="true"
+            android:background="@color/colorPrimary"
             android:fontFamily="@font/league_gothic_regular"
             android:gravity="center"
             android:text="Player 1"
@@ -30,7 +32,7 @@
             android:id="@+id/summary_faction_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:autoText="true"
             android:background="@color/albion_green"
             android:fontFamily="@font/league_gothic_regular"
@@ -41,8 +43,9 @@
 
         <ImageView
             android:id="@+id/summary_faction_imageview"
-            android:layout_width="44dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:adjustViewBounds="true"
             android:background="@color/albion_green"
             app:srcCompat="@drawable/faction_albion" />
@@ -51,7 +54,8 @@
             android:id="@+id/summary_playermat_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginStart="1dp"
+            android:layout_weight="2"
             android:autoText="true"
             android:background="@color/playermat_brown"
             android:fontFamily="@font/league_gothic_regular"
@@ -62,8 +66,9 @@
 
         <ImageView
             android:id="@+id/summary_playermat_imageview"
-            android:layout_width="85dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:adjustViewBounds="true"
             android:background="@color/playermat_brown"
             android:paddingEnd="8dp"
