@@ -5,8 +5,8 @@
     android:id="@+id/summary_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    tools:context=".SummaryFragment" >
+    android:layout_margin="8dp"
+    tools:context=".SummaryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player_list"
@@ -14,12 +14,13 @@
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/new_game_button"
-        app:layout_constraintEnd_toEndOf="@id/fab_add_Player"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_game_button"
+        style="@style/Theme.ScytheCompanion.Button"
         android:layout_width="200dp"
         android:layout_height="0dp"
         android:soundEffectsEnabled="true"
@@ -30,17 +31,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fab_add_Player"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton"
-        style="@style/Theme.ScytheCompanion.Button"/>
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_Player"
+        style="@style/Theme.ScytheCompanion.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:src="@drawable/ic_person_add_dark_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Theme.ScytheCompanion.FloatingActionButton"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

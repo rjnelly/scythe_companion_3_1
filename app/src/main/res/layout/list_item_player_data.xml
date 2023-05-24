@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/summary_player_name_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autoText="true"
+            android:fontFamily="@font/league_gothic_regular"
+            android:gravity="center"
+            android:text="Player 1"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/summary_faction_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autoText="true"
+            android:background="@color/albion_green"
+            android:fontFamily="@font/league_gothic_regular"
+            android:gravity="center"
+            android:text="@string/albion"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/summary_faction_imageview"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/albion_green"
+            app:srcCompat="@drawable/faction_albion" />
+
+        <TextView
+            android:id="@+id/summary_playermat_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autoText="true"
+            android:background="@color/playermat_brown"
+            android:fontFamily="@font/league_gothic_regular"
+            android:gravity="center"
+            android:text="@string/agricultural"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/summary_playermat_imageview"
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/playermat_brown"
+            android:paddingEnd="8dp"
+            app:srcCompat="@drawable/playermat_agricultural" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

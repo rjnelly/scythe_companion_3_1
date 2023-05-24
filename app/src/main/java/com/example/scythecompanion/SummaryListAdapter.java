@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.scythecompanion.databinding.ListItemPlayerDataBinding;
 import com.example.scythecompanion.databinding.ListItemSummaryBinding;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
     @NonNull
     @Override
     public PlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListItemSummaryBinding binding = ListItemSummaryBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ListItemPlayerDataBinding binding = ListItemPlayerDataBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         listener = (ItemInteractionListener) parent.getContext();
         return new PlayerViewHolder(binding);
     }
@@ -104,13 +105,13 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         ImageView factionImage;
         ImageView playerMatImage;
 
-        public PlayerViewHolder(ListItemSummaryBinding binding) {
+        public PlayerViewHolder(ListItemPlayerDataBinding binding) {
             super(binding.getRoot());
-            playerNameTV = binding.summaryPlayerNameLabel;
-            factionNameTV = binding.summaryFactionName;
-            playerMatNameTV = binding.summaryPlayermatLabel;
-            factionImage = binding.summaryFactionImage;
-            playerMatImage = binding.summaryPlayermatImage;
+            playerNameTV = binding.summaryPlayerNameTextview;
+            factionNameTV = binding.summaryFactionTextview;
+            playerMatNameTV = binding.summaryPlayermatTextview;
+            factionImage = binding.summaryFactionImageview;
+            playerMatImage = binding.summaryPlayermatImageview;
         }
     }
 
