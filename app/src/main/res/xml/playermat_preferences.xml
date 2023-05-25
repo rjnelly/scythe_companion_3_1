@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:key="player_mats"
+        android:title="Player Mats">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_industrial"
+            android:key="@string/industrial_preference_key"
+            android:title="@string/industrial" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_engineering"
+            android:key="@string/engineering_preference_key"
+            android:title="@string/engineering" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_patriotic"
+            android:key="@string/patriotic_preference_key"
+            android:title="@string/patriotic" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_mechanical"
+            android:key="@string/mechanical_preference_key"
+            android:title="@string/mechanical" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_agricultural"
+            android:key="@string/agricultural_preference_key"
+            android:title="@string/agricultural" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

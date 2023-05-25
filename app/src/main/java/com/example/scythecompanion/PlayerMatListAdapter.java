@@ -30,7 +30,7 @@ public class PlayerMatListAdapter extends RecyclerView.Adapter<PlayerMatListAdap
 
     private int playerPosition;
 
-    //private ScytheCompanionViewModel viewModel;
+    private PlayerDataViewModel viewModel;
 
     public PlayerMatListAdapter(int playerPosition, Dialog dialog){
         this.playerPosition = playerPosition;
@@ -49,7 +49,7 @@ public class PlayerMatListAdapter extends RecyclerView.Adapter<PlayerMatListAdap
     public PlayerMatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ListItemPlayermatBinding binding = ListItemPlayermatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         context = parent.getContext();
-        //viewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(ScytheCompanionViewModel.class);
+        viewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(PlayerDataViewModel.class);
         return new PlayerMatViewHolder(binding);
 
     }
@@ -69,14 +69,14 @@ public class PlayerMatListAdapter extends RecyclerView.Adapter<PlayerMatListAdap
         holder.playerMatTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Faction playerFaction = viewModel.getPlayers().getValue().get(playerPosition).getFaction();
-                if(!(((MainActivity)context).validCombination(playerFaction, mat))){
+                Faction playerFaction = viewModel.getPlayers().getValue().get(playerPosition).getFaction();
+                if(!viewModel.validCombination(playerFaction, mat)){
                     Toast.makeText(context, "Invalid Faction/Player Mat Combination", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    ((MainActivity)context).setPlayerMat(playerPosition, mat);
+                    viewModel.setPlayerMat(playerPosition, mat);
                     dialog.dismiss();
-                }*/
+                }
             }
         });
 

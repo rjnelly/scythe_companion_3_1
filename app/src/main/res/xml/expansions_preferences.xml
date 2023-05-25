@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/expansions_header">
+        <SwitchPreferenceCompat
+            android:key="@string/invaders_from_afar_preference_key"
+            android:title="@string/invaders_from_afar"
+            android:persistent="true"
+            android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="@string/rise_of_fenris_preference_key"
+            android:title="@string/rise_of_fenris"
+            android:persistent="true"
+            android:defaultValue="false"
+            android:summary="@string/spoiler_alert"/>
+    </PreferenceCategory>
+</PreferenceScreen>

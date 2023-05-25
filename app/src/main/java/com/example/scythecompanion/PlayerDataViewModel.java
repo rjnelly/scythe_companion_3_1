@@ -56,4 +56,19 @@ public class PlayerDataViewModel extends AndroidViewModel {
         players.getValue().get(playerPosition).setName(name);
         players.setValue(players.getValue());
     }
+
+    public boolean validCombination(Faction faction, PlayerMat playerMat){
+        return !(faction == Faction.RUSVIET && playerMat == PlayerMat.INDUSTRIAL ||
+                faction == Faction.CRIMEA && playerMat == PlayerMat.PATRIOTIC);
+    }
+
+    public void setPlayerFaction(int playerPosition, Faction faction) {
+        players.getValue().get(playerPosition).setFaction(faction);
+        players.setValue(players.getValue());
+    }
+
+    public void setPlayerMat(int playerPosition, PlayerMat playerMat) {
+        players.getValue().get(playerPosition).setPlayerMat(playerMat);
+        players.setValue(players.getValue());
+    }
 }

@@ -1,40 +1,35 @@
 package com.example.scythecompanion;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.example.scythecompanion.databinding.DialogAddPlayerBinding;
-import com.example.scythecompanion.databinding.DialogListBinding;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.preference.PreferenceManager;
-import android.view.KeyEvent;
-import android.view.View;
-
-import androidx.core.view.WindowCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ActivityMainBinding;
+import com.example.scythecompanion.databinding.DialogAddPlayerBinding;
+import com.example.scythecompanion.databinding.DialogListBinding;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -42,12 +37,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements ItemInteractionListener{
+public class MainActivity extends AppCompatActivity implements ItemInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppBarConfiguration appBarConfiguration;
     private PlayerDataViewModel viewModel;
     private SharedPreferences preferences;
     private ActivityMainBinding binding;
+    private NavController navController;
 
     private AlertDialog editPlayerNameDialog;
 
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferences = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         viewModel = new ViewModelProvider(this).get(PlayerDataViewModel.class);
 
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
         setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            navController.navigate(R.id.settingsFragment);
         }
 
         return super.onOptionsItemSelected(item);
@@ -104,21 +100,28 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        savePlayers();
+    }
+
     private void initializeFromPreferences() {
-        getPlayersFromPreferences();
         getPlayerMatsFromPreferences();
         getFactionsFromPreferences();
+        getPlayersFromPreferences();
+
     }
 
     public void getPlayersFromPreferences(){
-        String playerListString = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.player_list_key), "");
+        List<Player> playerList = new ArrayList<>();
+        String playerListString = preferences.getString(getString(R.string.player_list_key), "");
         if (!playerListString.equals("")) {
             Type type = new TypeToken<List<Player>>() {
             }.getType();
-            viewModel.setPlayers(new Gson().fromJson(playerListString, type));
-        } else {
-            viewModel.setPlayers(new ArrayList<>());
+            playerList = new Gson().fromJson(playerListString, type);
         }
+        viewModel.setPlayers(playerList);
     }
 
 
@@ -138,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         if(preferences.getBoolean(getString(R.string.invaders_from_afar_preference_key), false)) {
             if (preferences.getBoolean(getString(R.string.togawa_preference_key), true))
                 factions.add(Faction.TOGAWA);
-            if (preferences.getBoolean(getString(R.string.albion_preference_key), true));
+            if(preferences.getBoolean(getString(R.string.albion_preference_key), true))
+                factions.add(Faction.ALBION);
         }
         if (preferences.getBoolean(getString(R.string.rise_of_fenris_preference_key), false)) {
             if (preferences.getBoolean(getString(R.string.tesla_preference_key), true))
@@ -252,8 +256,18 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
                 }).create().show();
     }
 
-    private void showFactionListDialog(int playerPosition) {
+    @Override
+    public void factionDeleted(int playerPosition) {
+        viewModel.setPlayerFaction(playerPosition, Faction.NONE);
+    }
 
+    private void showFactionListDialog(int playerPosition) {
+        List<Faction> unusedFactions = new ArrayList<>(viewModel.getAvailableFactions().getValue());
+        List<Player> players = viewModel.getPlayers().getValue();
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(i != playerPosition) unusedFactions.remove(players.get(i).getFaction());
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_ScytheCompanion_AlertDialog);
         DialogListBinding dialogFactionListBinding = DialogListBinding.inflate(getLayoutInflater());
         View dialogView = dialogFactionListBinding.getRoot();
@@ -261,14 +275,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         Dialog dialog = builder.create();
         RecyclerView factionListView = dialogFactionListBinding.selectionList;
         FactionListAdapter adapter = new FactionListAdapter(playerPosition, dialog);
-        adapter.setFactionList(viewModel.getAvailableFactions().getValue());
-        /*viewModel.getAvailableFactions().observe(this, new Observer<List<Faction>>() {
-            @Override
-            public void onChanged(List<Faction> factions) {
-                adapter.setFactionList(factions);
-            }
-        });*/
-
+        adapter.setFactionList(unusedFactions);
         factionListView.setLayoutManager(new LinearLayoutManager(this));
         factionListView.setAdapter(adapter);
         dialog.show();
@@ -286,6 +293,18 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         playerMatListView.setLayoutManager(new LinearLayoutManager(this));
         playerMatListView.setAdapter(adapter);
         dialog.show();
+    }
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        getFactionsFromPreferences();
+        getPlayerMatsFromPreferences();
+    }
+    private void savePlayers() {
+        SharedPreferences.Editor editor = preferences.edit();
+        String playersJSON = new Gson().toJson(viewModel.getPlayers().getValue());
+        editor.putString("players", playersJSON).apply();
     }
 
     private class EditNameListener implements TextView.OnEditorActionListener {

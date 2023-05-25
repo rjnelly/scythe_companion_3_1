@@ -9,4 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.scythecompanion.SummaryFragment"
         tools:layout="@layout/fragment_summary" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.scythecompanion.SettingsFragment" />
 </navigation>

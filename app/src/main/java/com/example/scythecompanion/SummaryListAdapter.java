@@ -67,12 +67,26 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
                 listener.factionSelected(holder.getAdapterPosition());
             }
         });
+        holder.factionNameTV.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.factionDeleted(holder.getAdapterPosition());
+                return true;
+            }
+        });
 
         holder.factionImage.setImageDrawable(ContextCompat.getDrawable(context, player.getFaction().IMAGE));
         holder.factionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.factionSelected(holder.getAdapterPosition());
+            }
+        });
+        holder.factionImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.factionDeleted(holder.getAdapterPosition());
+                return true;
             }
         });
         holder.factionImage.setBackgroundColor(factionColor);

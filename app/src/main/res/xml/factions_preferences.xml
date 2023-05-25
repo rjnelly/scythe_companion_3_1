@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:title="@string/factions_header"
+        android:key="factions">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/rusviet_preference_key"
+            android:title="@string/rusviet"
+            android:icon="@drawable/rusviet_icon"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/polania_preference_key"
+            android:title="@string/polania"
+            android:icon="@drawable/polania_icon"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/crimea_preference_key"
+            android:title="@string/crimea"
+            android:icon="@drawable/crimean_icon"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/nordic_preference_key"
+            android:title="@string/nordic"
+            android:icon="@drawable/nordic_icon"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/saxony_preference_key"
+            android:title="@string/saxony"
+            android:icon="@drawable/saxony_icon"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
