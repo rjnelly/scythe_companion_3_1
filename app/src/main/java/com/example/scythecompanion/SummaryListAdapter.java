@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ListItemPlayerDataBinding;
-import com.example.scythecompanion.databinding.ListItemSummaryBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +69,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         holder.factionNameTV.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                listener.factionDeleted(holder.getAdapterPosition());
+                listener.resetFaction(holder.getAdapterPosition());
                 return true;
             }
         });
@@ -85,7 +84,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         holder.factionImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                listener.factionDeleted(holder.getAdapterPosition());
+                listener.resetFaction(holder.getAdapterPosition());
                 return true;
             }
         });
@@ -97,11 +96,25 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
                 listener.playerMatSelected(holder.getAdapterPosition());
             }
         });
+        holder.playerMatNameTV.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.resetPlayerMat(holder.getAdapterPosition());
+                return true;
+            }
+        });
         holder.playerMatImage.setImageDrawable(ContextCompat.getDrawable(context, player.getPlayerMat().IMAGE));
         holder.playerMatImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                listener.playerMatSelected(holder.getAdapterPosition());
+            }
+        });
+        holder.playerMatImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.resetPlayerMat(holder.getAdapterPosition());
+                return true;
             }
         });
 
