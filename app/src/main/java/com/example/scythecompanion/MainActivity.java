@@ -257,8 +257,13 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
     @Override
-    public void factionDeleted(int playerPosition) {
+    public void resetFaction(int playerPosition) {
         viewModel.setPlayerFaction(playerPosition, Faction.NONE);
+    }
+
+    @Override
+    public void resetPlayerMat(int playerPosition) {
+        viewModel.setPlayerMat(playerPosition, PlayerMat.NONE);
     }
 
     private void showFactionListDialog(int playerPosition) {
@@ -282,6 +287,12 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
     private void showPlayerMatListDialog(int playerPosition) {
+        List<PlayerMat> unusedMats = new ArrayList<>(viewModel.getAvailableMats().getValue());
+        List<Player> players = viewModel.getPlayers().getValue();
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(i != playerPosition) unusedMats.remove(players.get(i).getPlayerMat());
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_ScytheCompanion_AlertDialog);
         DialogListBinding dialogFactionListBinding = DialogListBinding.inflate(getLayoutInflater());
         View dialogView = dialogFactionListBinding.getRoot();
@@ -289,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         Dialog dialog = builder.create();
         RecyclerView playerMatListView = dialogFactionListBinding.selectionList;
         PlayerMatListAdapter adapter = new PlayerMatListAdapter(playerPosition, dialog);
-        adapter.setPlayerMatList(viewModel.getAvailableMats().getValue());
+        adapter.setPlayerMatList(unusedMats);
         playerMatListView.setLayoutManager(new LinearLayoutManager(this));
         playerMatListView.setAdapter(adapter);
         dialog.show();

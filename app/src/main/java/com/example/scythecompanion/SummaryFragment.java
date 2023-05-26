@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class SummaryFragment extends Fragment {
     private FragmentSummaryBinding binding;
     private PlayerDataViewModel viewModel;
     private List<Player> players = new ArrayList<>();
+
 
     private AlertDialog addPlayerDialog;
     @Override
@@ -80,6 +82,19 @@ public class SummaryFragment extends Fragment {
                     adapter.notifyDataSetChanged();
             }
         }).attachToRecyclerView(playerSummaryList);
+
+        ImageView structureImage = binding.structureBonusImage;
+        structureImage.setVisibility(View.GONE);
+        binding.fabToggleStructureBonus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(structureImage.getVisibility() == View.GONE){
+                    structureImage.setVisibility(View.VISIBLE);
+                } else {
+                    structureImage.setVisibility(View.GONE);
+                }
+            }
+        });
         binding.newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
