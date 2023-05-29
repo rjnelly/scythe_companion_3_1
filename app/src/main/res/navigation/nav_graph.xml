@@ -12,4 +12,25 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.scythecompanion.SettingsFragment" />
+    <fragment
+        android:id="@+id/expansionSettingsFragment"
+        android:name="com.example.scythecompanion.ExpansionSettingsFragment">
+        <action
+            android:id="@+id/action_expansionSettingsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/factionSettingsFragment"
+        android:name="com.example.scythecompanion.FactionSettingsFragment">
+        <action
+            android:id="@+id/action_factionSettingsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerMatSettingsFragment"
+        android:name="com.example.scythecompanion.PlayerMatSettingsFragment">
+        <action
+            android:id="@+id/action_playerMatSettingsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 </navigation>

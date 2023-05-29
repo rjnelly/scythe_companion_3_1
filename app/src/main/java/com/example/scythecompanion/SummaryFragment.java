@@ -1,6 +1,7 @@
 package com.example.scythecompanion;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.DialogAddPlayerBinding;
 import com.example.scythecompanion.databinding.FragmentSummaryBinding;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class SummaryFragment extends Fragment {
 
 
     private AlertDialog addPlayerDialog;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -78,8 +82,8 @@ public class SummaryFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                    viewModel.removePlayer(viewHolder.getAdapterPosition());
-                    adapter.notifyDataSetChanged();
+                viewModel.removePlayer(viewHolder.getAdapterPosition());
+                adapter.notifyDataSetChanged();
             }
         }).attachToRecyclerView(playerSummaryList);
 
@@ -88,7 +92,7 @@ public class SummaryFragment extends Fragment {
         binding.fabToggleStructureBonus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(structureImage.getVisibility() == View.GONE){
+                if (structureImage.getVisibility() == View.GONE) {
                     structureImage.setVisibility(View.VISIBLE);
                 } else {
                     structureImage.setVisibility(View.GONE);
@@ -98,7 +102,8 @@ public class SummaryFragment extends Fragment {
         binding.newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!viewModel.setUpNewGame())
+                    Toast.makeText(requireContext(), "Not Enough Player Mats or Factions for Number of Players", Toast.LENGTH_SHORT).show();
             }
         });
         binding.fabAddPlayer.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +140,7 @@ public class SummaryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String name = playerInput.getEditText().getText().toString();
-                if(name.isEmpty())name = "Player " + (players.size() + 1);
+                if (name.isEmpty()) name = "Player " + (players.size() + 1);
                 viewModel.addPlayer(new Player(name, Faction.NONE, PlayerMat.NONE));
                 addPlayerDialog.dismiss();
             }
@@ -144,13 +149,14 @@ public class SummaryFragment extends Fragment {
         addPlayerDialog.show();
         addPlayerBinding.editTextPlayerName.requestFocus();
     }
-    public void addPlayer(String playerName){
-        if(playerName.isEmpty())playerName = "Player " + (players.size() + 1);
+
+    public void addPlayer(String playerName) {
+        if (playerName.isEmpty()) playerName = "Player " + (players.size() + 1);
         viewModel.addPlayer(new Player(playerName, Faction.NONE, PlayerMat.NONE));
     }
 
     private class PlayerNameListener implements TextView.OnEditorActionListener {
-         @Override
+        @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == EditorInfo.IME_ACTION_NEXT)) {
                 addPlayer(v.getText().toString());
@@ -161,7 +167,6 @@ public class SummaryFragment extends Fragment {
         }
 
     }
-
 
 
 }

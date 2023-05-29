@@ -3,6 +3,7 @@ package com.example.scythecompanion;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     }
 
-    public void getPlayersFromPreferences(){
+    public void getPlayersFromPreferences() {
         List<Player> playerList = new ArrayList<>();
         String playerListString = preferences.getString(getString(R.string.player_list_key), "");
         if (!playerListString.equals("")) {
@@ -125,23 +125,22 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
 
-
-    public void getFactionsFromPreferences(){
+    public void getFactionsFromPreferences() {
         List<Faction> factions = new ArrayList<>();
-        if(preferences.getBoolean(getString(R.string.rusviet_preference_key), true))
+        if (preferences.getBoolean(getString(R.string.rusviet_preference_key), true))
             factions.add(Faction.RUSVIET);
-        if(preferences.getBoolean(getString(R.string.polania_preference_key), true))
+        if (preferences.getBoolean(getString(R.string.polania_preference_key), true))
             factions.add(Faction.POLANIA);
-        if(preferences.getBoolean(getString(R.string.crimea_preference_key), true))
+        if (preferences.getBoolean(getString(R.string.crimea_preference_key), true))
             factions.add(Faction.CRIMEA);
-        if(preferences.getBoolean(getString(R.string.nordic_preference_key), true))
+        if (preferences.getBoolean(getString(R.string.nordic_preference_key), true))
             factions.add(Faction.NORDIC);
-        if(preferences.getBoolean(getString(R.string.saxony_preference_key), true))
+        if (preferences.getBoolean(getString(R.string.saxony_preference_key), true))
             factions.add(Faction.SAXONY);
-        if(preferences.getBoolean(getString(R.string.invaders_from_afar_preference_key), false)) {
+        if (preferences.getBoolean(getString(R.string.invaders_from_afar_preference_key), false)) {
             if (preferences.getBoolean(getString(R.string.togawa_preference_key), true))
                 factions.add(Faction.TOGAWA);
-            if(preferences.getBoolean(getString(R.string.albion_preference_key), true))
+            if (preferences.getBoolean(getString(R.string.albion_preference_key), true))
                 factions.add(Faction.ALBION);
         }
         if (preferences.getBoolean(getString(R.string.rise_of_fenris_preference_key), false)) {
@@ -153,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         viewModel.setAvailableFactions(factions);
     }
 
-    public void getPlayerMatsFromPreferences(){
-        List<PlayerMat> playerMats= new ArrayList<>();
+    public void getPlayerMatsFromPreferences() {
+        List<PlayerMat> playerMats = new ArrayList<>();
         if (preferences.getBoolean(getString(R.string.industrial_preference_key), true))
             playerMats.add(PlayerMat.INDUSTRIAL);
         if (preferences.getBoolean(getString(R.string.engineering_preference_key), true))
@@ -204,8 +203,9 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         editPlayerNameDialog.show();
         addPlayerBinding.editTextPlayerName.requestFocus();
     }
-    public void changePlayerName(int playerPosition, String name){
-        if(name.isEmpty())name = "Player " + (viewModel.getPlayers().getValue().size() + 1);
+
+    public void changePlayerName(int playerPosition, String name) {
+        if (name.isEmpty()) name = "Player " + (viewModel.getPlayers().getValue().size() + 1);
         viewModel.changePlayerName(playerPosition, name);
         editPlayerNameDialog.dismiss();
     }
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
                 }).setNegativeButton(getString(R.string.btn_randomize), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        viewModel.setRandomFaction(playerPosition);
                     }
                 }).create().show();
     }
@@ -251,10 +251,11 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
                 }).setNegativeButton(getString(R.string.btn_randomize), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        viewModel.setRandomPlayerMat(playerPosition);
                     }
                 }).create().show();
     }
+
 
     @Override
     public void resetFaction(int playerPosition) {
@@ -267,12 +268,6 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
     private void showFactionListDialog(int playerPosition) {
-        List<Faction> unusedFactions = new ArrayList<>(viewModel.getAvailableFactions().getValue());
-        List<Player> players = viewModel.getPlayers().getValue();
-        for(int i = 0; i < players.size(); i++)
-        {
-            if(i != playerPosition) unusedFactions.remove(players.get(i).getFaction());
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_ScytheCompanion_AlertDialog);
         DialogListBinding dialogFactionListBinding = DialogListBinding.inflate(getLayoutInflater());
         View dialogView = dialogFactionListBinding.getRoot();
@@ -280,19 +275,13 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         Dialog dialog = builder.create();
         RecyclerView factionListView = dialogFactionListBinding.selectionList;
         FactionListAdapter adapter = new FactionListAdapter(playerPosition, dialog);
-        adapter.setFactionList(unusedFactions);
+        adapter.setFactionList(viewModel.getUnUsedFactions(playerPosition));
         factionListView.setLayoutManager(new LinearLayoutManager(this));
         factionListView.setAdapter(adapter);
         dialog.show();
     }
 
     private void showPlayerMatListDialog(int playerPosition) {
-        List<PlayerMat> unusedMats = new ArrayList<>(viewModel.getAvailableMats().getValue());
-        List<Player> players = viewModel.getPlayers().getValue();
-        for(int i = 0; i < players.size(); i++)
-        {
-            if(i != playerPosition) unusedMats.remove(players.get(i).getPlayerMat());
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_ScytheCompanion_AlertDialog);
         DialogListBinding dialogFactionListBinding = DialogListBinding.inflate(getLayoutInflater());
         View dialogView = dialogFactionListBinding.getRoot();
@@ -300,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         Dialog dialog = builder.create();
         RecyclerView playerMatListView = dialogFactionListBinding.selectionList;
         PlayerMatListAdapter adapter = new PlayerMatListAdapter(playerPosition, dialog);
-        adapter.setPlayerMatList(unusedMats);
+        adapter.setPlayerMatList(viewModel.getUnUsedPlayerMats(playerPosition));
         playerMatListView.setLayoutManager(new LinearLayoutManager(this));
         playerMatListView.setAdapter(adapter);
         dialog.show();
@@ -312,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         getFactionsFromPreferences();
         getPlayerMatsFromPreferences();
     }
+
     private void savePlayers() {
         SharedPreferences.Editor editor = preferences.edit();
         String playersJSON = new Gson().toJson(viewModel.getPlayers().getValue());
@@ -320,9 +310,11 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     private class EditNameListener implements TextView.OnEditorActionListener {
         private int position;
-        public EditNameListener(int playerPosition){
+
+        public EditNameListener(int playerPosition) {
             this.position = playerPosition;
         }
+
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == EditorInfo.IME_ACTION_NEXT)) {

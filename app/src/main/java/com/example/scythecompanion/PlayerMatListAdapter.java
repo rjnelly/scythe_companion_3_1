@@ -15,8 +15,10 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.scythecompanion.databinding.ListItemPlayermatBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 import java.util.List;
