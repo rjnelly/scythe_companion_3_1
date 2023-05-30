@@ -75,6 +75,12 @@ public class SummaryFragment extends Fragment {
                 adapter.setPlayerList(players);
             }
         });
+        viewModel.getStructureBonusVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean visible) {
+                adapter.setStructureVisible(visible);
+            }
+        });
 
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -98,7 +104,12 @@ public class SummaryFragment extends Fragment {
             }
         }).attachToRecyclerView(playerSummaryList);
 
-
+        binding.fabToggleStructureBonus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.toggleStructureBonus();
+            }
+        });
         binding.newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

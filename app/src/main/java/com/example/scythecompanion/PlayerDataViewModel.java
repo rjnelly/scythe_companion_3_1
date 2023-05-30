@@ -29,6 +29,7 @@ public class PlayerDataViewModel extends AndroidViewModel {
             R.drawable.structure_bonus_m,
             R.drawable.structure_bonus_n
     };
+    private MutableLiveData<Boolean> structureBonusVisible = new MutableLiveData<>(false);
     private MutableLiveData<List<Player>> players = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<Faction>> availableFactions = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PlayerMat>> availableMats = new MutableLiveData<>(new ArrayList<>());
@@ -47,6 +48,14 @@ public class PlayerDataViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<PlayerMat>> getAvailableMats() {
         return availableMats;
+    }
+
+    public MutableLiveData<Boolean> getStructureBonusVisible() {
+        return structureBonusVisible;
+    }
+
+    public void setStructureBonusVisible(boolean structureBonusVisible) {
+        this.structureBonusVisible.setValue(structureBonusVisible);
     }
 
     public void setPlayers(List<Player> players) {
@@ -147,7 +156,7 @@ public class PlayerDataViewModel extends AndroidViewModel {
             return false;
         }
     }
-
+    //TODO If no players, automa,
     public boolean setUpNewGame() {
         List<Player> playerList = players.getValue();
         List<Faction> factionList = new ArrayList<>(getAvailableFactions().getValue());
@@ -170,9 +179,14 @@ public class PlayerDataViewModel extends AndroidViewModel {
                     }
                 }
             }
+            structureBonusVisible.setValue(true);
             return true;
         } else {
             return false;
         }
+    }
+
+    public void toggleStructureBonus() {
+        structureBonusVisible.setValue(Boolean.FALSE.equals(structureBonusVisible.getValue()));
     }
 }

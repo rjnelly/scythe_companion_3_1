@@ -24,6 +24,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Player> playerList = new ArrayList<>();
     private ItemInteractionListener listener;
 
+    private boolean structureBonusVisible;
+
     public SummaryListAdapter() {
 
     }
@@ -42,9 +44,9 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        listener = (ItemInteractionListener) parent.getContext();
         if(viewType == PLAYER_VIEW){
             ListItemPlayerDataBinding binding = ListItemPlayerDataBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            listener = (ItemInteractionListener) parent.getContext();
             return new PlayerViewHolder(binding);
         }
         ListItemStructureBonusBinding binding = ListItemStructureBonusBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
@@ -142,7 +144,12 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return playerList.size() + 1;
+        return structureBonusVisible ? playerList.size() + 1 : playerList.size();
+    }
+
+    public void setStructureVisible(Boolean visible) {
+        structureBonusVisible = visible;
+        notifyDataSetChanged();
     }
 
     public class PlayerViewHolder extends RecyclerView.ViewHolder {
