@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -74,6 +76,7 @@ public class SummaryFragment extends Fragment {
             }
         });
 
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -81,24 +84,21 @@ public class SummaryFragment extends Fragment {
             }
 
             @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                if(viewHolder instanceof SummaryListAdapter.PlayerViewHolder)
+                    return super.getSwipeDirs(recyclerView, viewHolder);
+                return 0;
+            }
+
+            @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                if(viewHolder instanceof SummaryListAdapter.PlayerViewHolder){
                 viewModel.removePlayer(viewHolder.getAdapterPosition());
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();}
             }
         }).attachToRecyclerView(playerSummaryList);
 
-        ImageView structureImage = binding.structureBonusImage;
-        structureImage.setVisibility(View.GONE);
-        binding.fabToggleStructureBonus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (structureImage.getVisibility() == View.GONE) {
-                    structureImage.setVisibility(View.VISIBLE);
-                } else {
-                    structureImage.setVisibility(View.GONE);
-                }
-            }
-        });
+
         binding.newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

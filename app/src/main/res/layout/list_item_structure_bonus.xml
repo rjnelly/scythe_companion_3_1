@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardBackgroundColor="@color/colorAccent"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1dp"
+            android:layout_weight="3"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/league_gothic_regular"
+            android:gravity="center"
+            android:text="@string/structure_bonus"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp" />
+
+        <ImageView
+            android:id="@+id/structure_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:adjustViewBounds="true"
+            android:background="@color/colorPrimaryDark"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:srcCompat="@drawable/structure_bonus_a" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

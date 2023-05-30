@@ -12,6 +12,23 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlayerDataViewModel extends AndroidViewModel {
+
+    private static final int[] structureBonuses = {
+            R.drawable.structure_bonus_a,
+            R.drawable.structure_bonus_b,
+            R.drawable.structure_bonus_c,
+            R.drawable.structure_bonus_d,
+            R.drawable.structure_bonus_e,
+            R.drawable.structure_bonus_f,
+            R.drawable.structure_bonus_g,
+            R.drawable.structure_bonus_h,
+            R.drawable.structure_bonus_i,
+            R.drawable.structure_bonus_j,
+            R.drawable.structure_bonus_k,
+            R.drawable.structure_bonus_l,
+            R.drawable.structure_bonus_m,
+            R.drawable.structure_bonus_n
+    };
     private MutableLiveData<List<Player>> players = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<Faction>> availableFactions = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PlayerMat>> availableMats = new MutableLiveData<>(new ArrayList<>());

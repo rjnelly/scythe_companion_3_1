@@ -267,6 +267,11 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         viewModel.setPlayerMat(playerPosition, PlayerMat.NONE);
     }
 
+    @Override
+    public int getStructureBonus() {
+        return R.drawable.structure_bonus_a;
+    }
+
     private void showFactionListDialog(int playerPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_ScytheCompanion_AlertDialog);
         DialogListBinding dialogFactionListBinding = DialogListBinding.inflate(getLayoutInflater());

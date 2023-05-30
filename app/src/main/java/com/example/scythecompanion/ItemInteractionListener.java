@@ -6,4 +6,6 @@ public interface ItemInteractionListener {
     void playerMatSelected(int playerPosition);
     void resetFaction(int playerPosition);
     void resetPlayerMat(int playerPosition);
+
+    int getStructureBonus();
 }

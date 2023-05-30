@@ -9,14 +9,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ListItemPlayerDataBinding;
+import com.example.scythecompanion.databinding.ListItemStructureBonusBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.PlayerViewHolder> {
+public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int PLAYER_VIEW = 0;
+    private static final int STRUCTURE_VIEW = 1;
     private List<Player> playerList = new ArrayList<>();
     private ItemInteractionListener listener;
 
@@ -29,100 +33,116 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if(position < playerList.size()) return PLAYER_VIEW;
+        return STRUCTURE_VIEW;
+    }
+
     @NonNull
     @Override
-    public PlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListItemPlayerDataBinding binding = ListItemPlayerDataBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        listener = (ItemInteractionListener) parent.getContext();
-        return new PlayerViewHolder(binding);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == PLAYER_VIEW){
+            ListItemPlayerDataBinding binding = ListItemPlayerDataBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            listener = (ItemInteractionListener) parent.getContext();
+            return new PlayerViewHolder(binding);
+        }
+        ListItemStructureBonusBinding binding = ListItemStructureBonusBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new StructureViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
-        Player player = playerList.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
+        if(holder.getItemViewType() == PLAYER_VIEW){
+            PlayerViewHolder playerViewHolder = (PlayerViewHolder) holder;
+            Player player = playerList.get(position);
 
-        int factionColor = ContextCompat.getColor(context, player.getFaction().COLOR);
+            int factionColor = ContextCompat.getColor(context, player.getFaction().COLOR);
 
-        holder.playerNameTV.setText(player.getName());
-        holder.playerNameTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.playerNameSelected(holder.getAdapterPosition());
+            playerViewHolder.playerNameTV.setText(player.getName());
+            playerViewHolder.playerNameTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.playerNameSelected(holder.getAdapterPosition());
+                }
+            });
+
+            playerViewHolder.factionNameTV.setText(player.getFaction().NAME);
+            playerViewHolder.factionNameTV.setBackgroundColor(factionColor);
+
+            if (player.getFaction() == Faction.POLANIA) {
+                playerViewHolder.factionNameTV.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            } else {
+                playerViewHolder.factionNameTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
             }
-        });
+            playerViewHolder.factionNameTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.factionSelected(holder.getAdapterPosition());
+                }
+            });
+            playerViewHolder.factionNameTV.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.resetFaction(holder.getAdapterPosition());
+                    return true;
+                }
+            });
 
-        holder.factionNameTV.setText(player.getFaction().NAME);
-        holder.factionNameTV.setBackgroundColor(factionColor);
+            playerViewHolder.factionImage.setImageDrawable(ContextCompat.getDrawable(context, player.getFaction().IMAGE));
+            playerViewHolder.factionImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.factionSelected(holder.getAdapterPosition());
+                }
+            });
+            playerViewHolder.factionImage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.resetFaction(holder.getAdapterPosition());
+                    return true;
+                }
+            });
+            playerViewHolder.factionImage.setBackgroundColor(factionColor);
+            playerViewHolder.playerMatNameTV.setText(player.getPlayerMat().NAME);
+            playerViewHolder.playerMatNameTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.playerMatSelected(holder.getAdapterPosition());
+                }
+            });
+            playerViewHolder.playerMatNameTV.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.resetPlayerMat(holder.getAdapterPosition());
+                    return true;
+                }
+            });
+            playerViewHolder.playerMatImage.setImageDrawable(ContextCompat.getDrawable(context, player.getPlayerMat().IMAGE));
+            playerViewHolder.playerMatImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.playerMatSelected(holder.getAdapterPosition());
+                }
+            });
+            playerViewHolder.playerMatImage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.resetPlayerMat(holder.getAdapterPosition());
+                    return true;
+                }
+            });
 
-        if (player.getFaction() == Faction.POLANIA) {
-            holder.factionNameTV.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         } else {
-            holder.factionNameTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            StructureViewHolder structureViewHolder = (StructureViewHolder) holder;
+            structureViewHolder.structureImage.setImageDrawable(ContextCompat.getDrawable(context,listener.getStructureBonus()));
         }
-        holder.factionNameTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.factionSelected(holder.getAdapterPosition());
-            }
-        });
-        holder.factionNameTV.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.resetFaction(holder.getAdapterPosition());
-                return true;
-            }
-        });
-
-        holder.factionImage.setImageDrawable(ContextCompat.getDrawable(context, player.getFaction().IMAGE));
-        holder.factionImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.factionSelected(holder.getAdapterPosition());
-            }
-        });
-        holder.factionImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.resetFaction(holder.getAdapterPosition());
-                return true;
-            }
-        });
-        holder.factionImage.setBackgroundColor(factionColor);
-        holder.playerMatNameTV.setText(player.getPlayerMat().NAME);
-        holder.playerMatNameTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.playerMatSelected(holder.getAdapterPosition());
-            }
-        });
-        holder.playerMatNameTV.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.resetPlayerMat(holder.getAdapterPosition());
-                return true;
-            }
-        });
-        holder.playerMatImage.setImageDrawable(ContextCompat.getDrawable(context, player.getPlayerMat().IMAGE));
-        holder.playerMatImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               listener.playerMatSelected(holder.getAdapterPosition());
-            }
-        });
-        holder.playerMatImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.resetPlayerMat(holder.getAdapterPosition());
-                return true;
-            }
-        });
-
     }
 
     @Override
     public int getItemCount() {
-        return playerList.size();
+        return playerList.size() + 1;
     }
 
     public class PlayerViewHolder extends RecyclerView.ViewHolder {
@@ -143,4 +163,12 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         }
     }
 
+    private class StructureViewHolder extends RecyclerView.ViewHolder {
+        ImageView structureImage;
+        public StructureViewHolder(ListItemStructureBonusBinding binding) {
+            super(binding.getRoot());
+            structureImage = binding.structureImage;
+        }
+
+    }
 }

@@ -6,8 +6,6 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <!--<item name="fontFamily">@font/league_gothic_regular</item>-->
-        <!--<item name="android:textSize">24sp</item>-->
     </style>
 
     <style name="Theme.ScytheCompanion.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
@@ -25,15 +23,10 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/colorPrimary</item>
         <item name="buttonBarButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
-        <!--<item name="buttonBarPositiveButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Theme.ScytheCompanion.AlertButton</item>-->
     </style>
 
     <style name="Theme.ScytheCompanion.AlertButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <!--<item name="android:textSize">16sp</item>-->
     </style>
 
 
