@@ -125,6 +125,8 @@
     <string name="modular_board_key">modular_board</string>
     <string name="modular_board">Modular Board</string>
     <string name="modular_board_summary">Adds 8 stucture bonuses</string>
+    <string name="structure_tooltip">Toggle Structure Bonus Visibility</string>
+    <string name="add_player_tooltip">Add New Player</string>
 
 
 </resources>

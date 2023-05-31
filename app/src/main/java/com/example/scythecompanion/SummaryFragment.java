@@ -3,6 +3,7 @@ package com.example.scythecompanion;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -101,6 +102,10 @@ public class SummaryFragment extends Fragment {
             }
         }).attachToRecyclerView(playerSummaryList);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            binding.fabToggleStructureBonus.setTooltipText(getString(R.string.structure_tooltip));
+        }
+
         binding.fabToggleStructureBonus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +119,9 @@ public class SummaryFragment extends Fragment {
                     Toast.makeText(requireContext(), "Not Enough Player Mats or Factions for Number of Players", Toast.LENGTH_SHORT).show();
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            binding.fabAddPlayer.setTooltipText(getString(R.string.add_player_tooltip));
+        }
         binding.fabAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

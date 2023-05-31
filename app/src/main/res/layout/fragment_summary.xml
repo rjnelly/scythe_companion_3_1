@@ -54,6 +54,5 @@
         android:src="@drawable/ic_structure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="30dp"
-        />
+        app:maxImageSize="30dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
