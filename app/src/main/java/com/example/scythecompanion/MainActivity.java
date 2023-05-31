@@ -104,12 +104,48 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     protected void onStop() {
         super.onStop();
         savePlayers();
+        saveStructureBonus();
     }
 
     private void initializeFromPreferences() {
         getPlayerMatsFromPreferences();
         getFactionsFromPreferences();
         getPlayersFromPreferences();
+        getStructureBonusesFromPreferences();
+
+    }
+
+    private void getStructureBonusesFromPreferences() {
+        List<StructureBonus> structureBonuses = new ArrayList<>();
+        structureBonuses.add(StructureBonus.A);
+        structureBonuses.add(StructureBonus.B);
+        structureBonuses.add(StructureBonus.C);
+        structureBonuses.add(StructureBonus.D);
+        structureBonuses.add(StructureBonus.E);
+        structureBonuses.add(StructureBonus.F);
+        if(preferences.getBoolean(getString(R.string.modular_board_key), false)) {
+            structureBonuses.add(StructureBonus.G);
+            structureBonuses.add(StructureBonus.H);
+            structureBonuses.add(StructureBonus.I);
+            structureBonuses.add(StructureBonus.J);
+            structureBonuses.add(StructureBonus.K);
+            structureBonuses.add(StructureBonus.L);
+            structureBonuses.add(StructureBonus.M);
+            structureBonuses.add(StructureBonus.N);
+        }
+        viewModel.setStructureBonuses(structureBonuses);
+        StructureBonus structureBonus = viewModel.getStructureBonus().getValue();
+        if(structureBonus == null) {
+            int structureBonusOrdinal = preferences.getInt("structure_bonus", StructureBonus.A.ordinal());
+            structureBonus = StructureBonus.values()[structureBonusOrdinal];
+            if (structureBonuses.contains(structureBonus)) {
+                viewModel.setStructureBonus(structureBonus);
+            } else {
+                viewModel.setRandomStructureBonus();
+            }
+        } else if(!structureBonuses.contains(structureBonus)){
+            viewModel.setRandomStructureBonus();
+        }
 
     }
 
@@ -268,8 +304,8 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     }
 
     @Override
-    public int getStructureBonus() {
-        return R.drawable.structure_bonus_a;
+    public int getStructureBonusImage() {
+        return viewModel.getStructureBonus().getValue().IMAGE;
     }
 
     private void showFactionListDialog(int playerPosition) {
@@ -303,14 +339,20 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        getFactionsFromPreferences();
-        getPlayerMatsFromPreferences();
+        if(key.equals(getString(R.string.factions_preference_key))) getFactionsFromPreferences();
+        if(key.equals(getString(R.string.playermats_preference_key))) getPlayerMatsFromPreferences();
+        if(key.equals(getString(R.string.modular_board_key))) getStructureBonusesFromPreferences();
     }
 
     private void savePlayers() {
         SharedPreferences.Editor editor = preferences.edit();
         String playersJSON = new Gson().toJson(viewModel.getPlayers().getValue());
         editor.putString("players", playersJSON).apply();
+    }
+
+    private void saveStructureBonus(){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("structure_bonus", viewModel.getStructureBonus().getValue().ordinal()).apply();
     }
 
     private class EditNameListener implements TextView.OnEditorActionListener {

@@ -61,9 +61,6 @@ public class SummaryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*players.add(new Player("Player 1",Faction.ALBION, PlayerMat.AGRICULTURAL));
-        players.add(new Player("Player 2", Faction.CRIMEA, PlayerMat.NONE));
-        players.add(new Player("Player 3", Faction.NONE, PlayerMat.NONE));*/
         RecyclerView playerSummaryList = binding.playerList;
         playerSummaryList.setLayoutManager(new LinearLayoutManager(requireContext()));
         SummaryListAdapter adapter = new SummaryListAdapter();

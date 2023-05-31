@@ -1,6 +1,7 @@
 package com.example.scythecompanion;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
 public class ExpansionSettingsFragment extends PreferenceFragmentCompat {
@@ -22,6 +24,9 @@ public class ExpansionSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        preferences.registerOnSharedPreferenceChangeListener((SharedPreferences.OnSharedPreferenceChangeListener) requireActivity());
         final SwitchPreferenceCompat rise = findPreference(getString(R.string.rise_of_fenris_preference_key));
         rise.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

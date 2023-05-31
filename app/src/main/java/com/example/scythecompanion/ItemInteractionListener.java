@@ -7,5 +7,5 @@ public interface ItemInteractionListener {
     void resetFaction(int playerPosition);
     void resetPlayerMat(int playerPosition);
 
-    int getStructureBonus();
+    int getStructureBonusImage();
 }

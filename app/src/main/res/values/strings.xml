@@ -122,6 +122,9 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="structure_bonus">Structure\nBonus</string>
     <string name="player_1">Player 1</string>
+    <string name="modular_board_key">modular_board</string>
+    <string name="modular_board">Modular Board</string>
+    <string name="modular_board_summary">Adds 8 stucture bonuses</string>
 
 
 </resources>

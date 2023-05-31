@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ListItemPlayerDataBinding;
@@ -138,7 +137,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else {
             StructureViewHolder structureViewHolder = (StructureViewHolder) holder;
-            structureViewHolder.structureImage.setImageDrawable(ContextCompat.getDrawable(context,listener.getStructureBonus()));
+            structureViewHolder.structureImage.setImageDrawable(ContextCompat.getDrawable(context,listener.getStructureBonusImage()));
         }
     }
 
