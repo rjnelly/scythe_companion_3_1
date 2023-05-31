@@ -127,6 +127,9 @@
     <string name="modular_board_summary">Adds 8 stucture bonuses</string>
     <string name="structure_tooltip">Toggle Structure Bonus Visibility</string>
     <string name="add_player_tooltip">Add New Player</string>
+    <string name="choose_structure_bonus">Choose Structure Bonus</string>
+    <string name="random_structure_bonus">Would you like to select a random structure bonus?</string>
+    <string name="yes">Yes</string>
 
 
 </resources>

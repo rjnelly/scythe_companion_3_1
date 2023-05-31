@@ -1,7 +1,6 @@
 package com.example.scythecompanion;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -83,6 +82,11 @@ public class PlayerDataViewModel extends AndroidViewModel {
     public void removePlayer(int playerPosition){
         players.getValue().remove(playerPosition);
         players.setValue(players.getValue());
+        if(players.getValue().size() == 0){
+            setStructureBonusVisible(false);
+            setStructureBonus(StructureBonus.NONE);
+        }
+
     }
 
     public void changePlayerName(int playerPosition, String name){
@@ -121,7 +125,7 @@ public class PlayerDataViewModel extends AndroidViewModel {
         }
         return unusedFactions;
     }
-    public boolean setRandomFaction(int playerPosition) {
+    public void setRandomFaction(int playerPosition) {
         List<Faction> factions = getUnUsedFactions(playerPosition);
         Collections.shuffle(factions);
         int index = 0;
@@ -135,14 +139,12 @@ public class PlayerDataViewModel extends AndroidViewModel {
         }
         if (valid) {
             setPlayerFaction(playerPosition, faction);
-            return true;
         } else {
-            return false;
         }
 
     }
 
-    public boolean setRandomPlayerMat(int playerPosition) {
+    public void setRandomPlayerMat(int playerPosition) {
         List<PlayerMat> mats = getUnUsedPlayerMats(playerPosition);
         Collections.shuffle(mats);
         int index = 0;
@@ -156,9 +158,7 @@ public class PlayerDataViewModel extends AndroidViewModel {
         }
         if (valid) {
             setPlayerMat(playerPosition, mat);
-            return true;
         } else {
-            return false;
         }
     }
     //TODO If no players, automa,
@@ -171,9 +171,11 @@ public class PlayerDataViewModel extends AndroidViewModel {
         if(playerList.size() <= factionList.size() && playerList.size() <= playerMatList.size()) {
             for(int i = 0; i < playerList.size(); i++){
                 Faction faction = factionList.remove(0);
-                PlayerMat mat = playerMatList.remove(0);
                 setPlayerFaction(i, faction);
-                setPlayerMat(i, mat);
+                if(!playerList.get(i).getName().equals("Automa")) {
+                    PlayerMat mat = playerMatList.remove(0);
+                    setPlayerMat(i, mat);
+                }
             }
             for(int i = 0; i < playerList.size(); i++){
                 if(!validCombination(playerList.get(i).getFaction(), playerList.get(i).getPlayerMat())){
@@ -182,6 +184,15 @@ public class PlayerDataViewModel extends AndroidViewModel {
                     }else{
                         setPlayerMat(i,playerMatList.remove(0));
                     }
+                }
+            }
+            if(playerList.size() == 1){
+                Player automa = new Player("Automa");
+                addPlayer(automa);
+                if(factionList.size() > 0)
+                    setPlayerFaction(1, factionList.remove(0));
+                else{
+                    return false;
                 }
             }
             setRandomStructureBonus();

@@ -73,6 +73,12 @@ public class SummaryFragment extends Fragment {
                 adapter.setPlayerList(players);
             }
         });
+        viewModel.getStructureBonus().observe(getViewLifecycleOwner(), new Observer<StructureBonus>() {
+            @Override
+            public void onChanged(StructureBonus structureBonus) {
+                adapter.setStructureBonus(structureBonus);
+            }
+        });
         viewModel.getStructureBonusVisible().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean visible) {

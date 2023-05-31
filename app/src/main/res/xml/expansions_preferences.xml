@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/expansions_header">
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:key="@string/invaders_from_afar_preference_key"
             android:title="@string/invaders_from_afar"
             android:persistent="true"
             android:defaultValue="false"/>
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:key="@string/rise_of_fenris_preference_key"
             android:title="@string/rise_of_fenris"
             android:persistent="true"
             android:defaultValue="false"
             android:summary="@string/spoiler_alert"/>
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:key="@string/modular_board_key"
             android:title="@string/modular_board"
             android:persistent="true"
-            app:defaultValue="false"
+           android:defaultValue="false"
             android:summary="@string/modular_board_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>

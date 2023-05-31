@@ -14,7 +14,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.SwitchPreferenceCompat;
+import androidx.preference.SwitchPreference;
 
 public class ExpansionSettingsFragment extends PreferenceFragmentCompat {
     @Override
@@ -27,7 +27,7 @@ public class ExpansionSettingsFragment extends PreferenceFragmentCompat {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         preferences.registerOnSharedPreferenceChangeListener((SharedPreferences.OnSharedPreferenceChangeListener) requireActivity());
-        final SwitchPreferenceCompat rise = findPreference(getString(R.string.rise_of_fenris_preference_key));
+        final SwitchPreference rise = findPreference(getString(R.string.rise_of_fenris_preference_key));
         rise.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

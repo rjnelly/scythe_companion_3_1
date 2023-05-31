@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         viewModel = new ViewModelProvider(this).get(PlayerDataViewModel.class);
 
         initializeFromPreferences();
+        if(savedInstanceState == null){
+            viewModel.setStructureBonus(StructureBonus.NONE);
+            if(viewModel.getPlayers().getValue().size() == 0){
+                viewModel.addPlayer(new Player("Player 1"));
+            }
+        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -141,10 +147,10 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
             if (structureBonuses.contains(structureBonus)) {
                 viewModel.setStructureBonus(structureBonus);
             } else {
-                viewModel.setRandomStructureBonus();
+                viewModel.setStructureBonus(StructureBonus.NONE);
             }
         } else if(!structureBonuses.contains(structureBonus)){
-            viewModel.setRandomStructureBonus();
+            viewModel.setStructureBonus(StructureBonus.NONE);
         }
 
     }
@@ -306,6 +312,30 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
     @Override
     public int getStructureBonusImage() {
         return viewModel.getStructureBonus().getValue().IMAGE;
+    }
+
+    @Override
+    public void structureBonusSelected() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.choose_structure_bonus)
+                .setMessage(R.string.random_structure_bonus)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewModel.setRandomStructureBonus();
+                    }
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create().show();
+
+    }
+
+    @Override
+    public void resetStructureBonus() {
+        viewModel.setStructureBonus(StructureBonus.NONE);
     }
 
     private void showFactionListDialog(int playerPosition) {

@@ -14,7 +14,11 @@ public enum StructureBonus {
     K(R.drawable.structure_bonus_k),
     L(R.drawable.structure_bonus_l),
     M(R.drawable.structure_bonus_m),
-    N(R.drawable.structure_bonus_n);
+    N(R.drawable.structure_bonus_n),
+
+    NONE(R.drawable.structure_bonus_blank);
+
+
 
     public int IMAGE;
 

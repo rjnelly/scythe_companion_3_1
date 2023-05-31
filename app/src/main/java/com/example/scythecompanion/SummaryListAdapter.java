@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scythecompanion.databinding.ListItemPlayerDataBinding;
 import com.example.scythecompanion.databinding.ListItemStructureBonusBinding;
 
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +25,9 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int STRUCTURE_VIEW = 1;
     private List<Player> playerList = new ArrayList<>();
     private ItemInteractionListener listener;
-
+    private PlayerDataViewModel viewModel;
     private boolean structureBonusVisible;
+    private StructureBonus structureBonus;
 
     public SummaryListAdapter() {
 
@@ -137,7 +141,20 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else {
             StructureViewHolder structureViewHolder = (StructureViewHolder) holder;
-            structureViewHolder.structureImage.setImageDrawable(ContextCompat.getDrawable(context,listener.getStructureBonusImage()));
+            structureViewHolder.structureImage.setImageDrawable(ContextCompat.getDrawable(context, structureBonus.IMAGE));
+            structureViewHolder.structureImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.structureBonusSelected();
+                }
+            });
+            structureViewHolder.structureImage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.resetStructureBonus();
+                    return true;
+                }
+            });
         }
     }
 
@@ -148,6 +165,11 @@ public class SummaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void setStructureVisible(Boolean visible) {
         structureBonusVisible = visible;
+        notifyDataSetChanged();
+    }
+
+    public void setStructureBonus(StructureBonus structureBonus){
+        this.structureBonus = structureBonus;
         notifyDataSetChanged();
     }
 
