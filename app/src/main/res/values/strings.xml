@@ -130,6 +130,9 @@
     <string name="choose_structure_bonus">Choose Structure Bonus</string>
     <string name="random_structure_bonus">Would you like to select a random structure bonus?</string>
     <string name="yes">Yes</string>
+    <string name="reset_players">Reset Players</string>
+    <string name="reset_factions">Reset Factions</string>
+    <string name="reset_playermats">Reset Playermats</string>
 
 
 </resources>

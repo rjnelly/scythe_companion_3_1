@@ -95,7 +95,7 @@ public class SummaryFragment extends Fragment {
 
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                if(viewHolder instanceof SummaryListAdapter.PlayerViewHolder)
+                if(viewModel.getPlayers().getValue().size() > 1 && viewHolder instanceof SummaryListAdapter.PlayerViewHolder)
                     return super.getSwipeDirs(recyclerView, viewHolder);
                 return 0;
             }
@@ -121,8 +121,12 @@ public class SummaryFragment extends Fragment {
         binding.newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!viewModel.setUpNewGame())
-                    Toast.makeText(requireContext(), "Not Enough Player Mats or Factions for Number of Players", Toast.LENGTH_SHORT).show();
+                if(viewModel.getPlayers().getValue().size() > 0) {
+                    if (!viewModel.setUpNewGame())
+                        Toast.makeText(requireContext(), "Not Enough Player Mats or Factions for Number of Players", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Add Player First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

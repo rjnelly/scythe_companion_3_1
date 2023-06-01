@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +23,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements ItemInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements ItemInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private AppBarConfiguration appBarConfiguration;
     private PlayerDataViewModel viewModel;
@@ -58,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         viewModel = new ViewModelProvider(this).get(PlayerDataViewModel.class);
 
         initializeFromPreferences();
-        if(savedInstanceState == null){
-            viewModel.setStructureBonus(StructureBonus.NONE);
-            if(viewModel.getPlayers().getValue().size() == 0){
+        if (savedInstanceState == null) {
+            //viewModel.setStructureBonus(StructureBonus.NONE);
+            if (viewModel.getPlayers().getValue().size() == 0) {
                 viewModel.addPlayer(new Player("Player 1"));
             }
         }
@@ -96,6 +99,15 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         if (id == R.id.action_settings) {
             navController.navigate(R.id.settingsFragment);
         }
+        if (id == R.id.action_reset_players){
+            viewModel.resetPlayers();
+        }
+        if (id == R.id.action_reset_factions){
+            viewModel.resetFactions();
+        }
+        if (id == R.id.action_reset_playermats){
+            viewModel.resetPlayerMats();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -113,12 +125,29 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         saveStructureBonus();
     }
 
+    @Override
+    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller, @NonNull Preference pref) {
+        if (pref.getKey().equals(getString(R.string.playermats_preference_key))) {
+            navController.navigate(R.id.playerMatSettingsFragment);
+        } else if (pref.getKey().equals(getString(R.string.factions_preference_key))) {
+            navController.navigate(R.id.factionSettingsFragment);
+        } else if (pref.getKey().equals(getString(R.string.expansions_preference_key))) {
+            navController.navigate(R.id.expansionSettingsFragment);
+        }
+        return true;
+    }
+
     private void initializeFromPreferences() {
+        getCampaignModeFromPreferences();
         getPlayerMatsFromPreferences();
         getFactionsFromPreferences();
         getPlayersFromPreferences();
         getStructureBonusesFromPreferences();
 
+    }
+
+    private void getCampaignModeFromPreferences() {
+        viewModel.setCampaingModeOn(preferences.getBoolean(getString(R.string.campaign_mode_pref_key), false));
     }
 
     private void getStructureBonusesFromPreferences() {
@@ -129,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         structureBonuses.add(StructureBonus.D);
         structureBonuses.add(StructureBonus.E);
         structureBonuses.add(StructureBonus.F);
-        if(preferences.getBoolean(getString(R.string.modular_board_key), false)) {
+        if (preferences.getBoolean(getString(R.string.modular_board_key), false)) {
             structureBonuses.add(StructureBonus.G);
             structureBonuses.add(StructureBonus.H);
             structureBonuses.add(StructureBonus.I);
@@ -141,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         }
         viewModel.setStructureBonuses(structureBonuses);
         StructureBonus structureBonus = viewModel.getStructureBonus().getValue();
-        if(structureBonus == null) {
+        if (structureBonus == null) {
             int structureBonusOrdinal = preferences.getInt("structure_bonus", StructureBonus.A.ordinal());
             structureBonus = StructureBonus.values()[structureBonusOrdinal];
             if (structureBonuses.contains(structureBonus)) {
@@ -149,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
             } else {
                 viewModel.setStructureBonus(StructureBonus.NONE);
             }
-        } else if(!structureBonuses.contains(structureBonus)){
+        } else if (!structureBonuses.contains(structureBonus)) {
             viewModel.setStructureBonus(StructureBonus.NONE);
         }
 
@@ -369,9 +398,10 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(getString(R.string.factions_preference_key))) getFactionsFromPreferences();
-        if(key.equals(getString(R.string.playermats_preference_key))) getPlayerMatsFromPreferences();
-        if(key.equals(getString(R.string.modular_board_key))) getStructureBonusesFromPreferences();
+        if (key.equals(getString(R.string.factions_preference_key))) getFactionsFromPreferences();
+        if (key.equals(getString(R.string.playermats_preference_key)))
+            getPlayerMatsFromPreferences();
+        if (key.equals(getString(R.string.modular_board_key))) getStructureBonusesFromPreferences();
     }
 
     private void savePlayers() {
@@ -380,10 +410,11 @@ public class MainActivity extends AppCompatActivity implements ItemInteractionLi
         editor.putString("players", playersJSON).apply();
     }
 
-    private void saveStructureBonus(){
+    private void saveStructureBonus() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("structure_bonus", viewModel.getStructureBonus().getValue().ordinal()).apply();
     }
+
 
     private class EditNameListener implements TextView.OnEditorActionListener {
         private int position;

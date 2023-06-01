@@ -16,6 +16,7 @@ public class PlayerDataViewModel extends AndroidViewModel {
     private MutableLiveData<List<StructureBonus>> structureBonuses = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<StructureBonus> structureBonus = new MutableLiveData<>();
     private MutableLiveData<Boolean> structureBonusVisible = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> campaingModeOn = new MutableLiveData<>(false);
     private MutableLiveData<List<Player>> players = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<Faction>> availableFactions = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PlayerMat>> availableMats = new MutableLiveData<>(new ArrayList<>());
@@ -38,6 +39,14 @@ public class PlayerDataViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getStructureBonusVisible() {
         return structureBonusVisible;
+    }
+
+    public MutableLiveData<Boolean> getCampaingModeOn() {
+        return campaingModeOn;
+    }
+
+    public void setCampaingModeOn(boolean campaingModeOn){
+        this.campaingModeOn.setValue(campaingModeOn);
     }
 
     public void setStructureBonuses(List<StructureBonus> structureBonuses) {
@@ -161,7 +170,6 @@ public class PlayerDataViewModel extends AndroidViewModel {
         } else {
         }
     }
-    //TODO If no players, automa,
     public boolean setUpNewGame() {
         List<Player> playerList = players.getValue();
         List<Faction> factionList = new ArrayList<>(getAvailableFactions().getValue());
@@ -170,8 +178,10 @@ public class PlayerDataViewModel extends AndroidViewModel {
         Collections.shuffle(playerMatList);
         if(playerList.size() <= factionList.size() && playerList.size() <= playerMatList.size()) {
             for(int i = 0; i < playerList.size(); i++){
-                Faction faction = factionList.remove(0);
-                setPlayerFaction(i, faction);
+                if(!campaingModeOn.getValue() || playerList.get(i).getFaction() == Faction.NONE){
+                    Faction faction = factionList.remove(0);
+                    setPlayerFaction(i, faction);
+                }
                 if(!playerList.get(i).getName().equals("Automa")) {
                     PlayerMat mat = playerMatList.remove(0);
                     setPlayerMat(i, mat);
@@ -205,5 +215,26 @@ public class PlayerDataViewModel extends AndroidViewModel {
 
     public void toggleStructureBonus() {
         structureBonusVisible.setValue(Boolean.FALSE.equals(structureBonusVisible.getValue()));
+    }
+
+    public void resetPlayers() {
+        List<Player> playerList = new ArrayList<>();
+        playerList.add(new Player("Player 1"));
+        players.setValue(playerList);
+        setStructureBonusVisible(false);
+    }
+
+    public void resetFactions() {
+        for(int i = 0; i < players.getValue().size(); i++){
+            setPlayerFaction(i, Faction.NONE);
+        }
+        setStructureBonusVisible(false);
+    }
+
+    public void resetPlayerMats() {
+        for(int i = 0; i < players.getValue().size(); i++){
+            setPlayerMat(i, PlayerMat.NONE);
+        }
+        setStructureBonusVisible(false);
     }
 }
